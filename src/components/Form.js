@@ -12,6 +12,7 @@ export default function Form({add}) {
   const [week, setWeek] = useState([])
   const [dayChecked, setDayChecked] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
   const [daysWeek, setDaysWeek] = useState(0)
+
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const months = ['Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 

@@ -16,7 +16,8 @@ export default function Add() {
         id: new Date().getTime(),
         task: name,
         description: desc,
-        date: date
+        date: date,
+        status: 'to do'
       }
     ])
   }

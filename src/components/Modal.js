@@ -1,21 +1,46 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal, View, StyleSheet, Pressable, Text, TouchableOpacity } from "react-native";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons"
+import { AntDesign, Octicons, Ionicons } from "@expo/vector-icons"
 
 import colors from "../config/colors";
 import { Touchable } from "react-native";
+import ModalEdit from "./ModalEdit";
 
-export default function ModalTask({viseble, setVisible}) {
+import { TodosContext } from '../context/todosContexts';
 
-  useEffect(() => {}, [viseble])
+export default function ModalTask({visible, setVisible, task, description, date, id, status}) {
+
+
+  const { todos, setTodos } = useContext(TodosContext)
+
+  useEffect(() => {}, [visible])
+
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const taskDate = new Date(date)
+  taskDate.setUTCDate(taskDate.getUTCDate() + 1)
+
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false)
+
+  const openModal = () => {
+    setVisibleModalEdit(true)
+  }
+
+  const editStatus = (newStatus) => {
+    setTodos(
+      todos.map((obj) => obj.id === id ? {...obj, status: newStatus} : obj)
+    )
+  }
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={viseble}
-      onRequestClose={() => setVisible(!viseble)}
+      visible={visible}
+      onRequestClose={() => setVisible(!visible)}
     >
+      <ModalEdit visible={visibleModalEdit} setVisible={setVisibleModalEdit} task={task} description={description} date={date} id={id} />
       <View style={styles.container}>
         <View style={styles.top}>
           <Pressable
@@ -26,14 +51,15 @@ export default function ModalTask({viseble, setVisible}) {
           </Pressable>
           <Text style={styles.textTop}>Task detail</Text>
 
-          <Pressable
+          <TouchableOpacity
             style={styles.buttonTop}
+            onPress={() => openModal()}
           >
-            <Feather name="trash-2" color={colors.secondary} size={24} />
-          </Pressable>
+            <Octicons name="pencil" color={colors.secondary} size={24} />
+          </TouchableOpacity>
         </View>
 
-        <Text style={styles.name}>Task name</Text>
+        <Text style={styles.name}>{task}</Text>
 
         <View style={styles.dateSection}>
           <View style={styles.calendarIcon}>
@@ -41,22 +67,57 @@ export default function ModalTask({viseble, setVisible}) {
           </View>
           <View style={styles.textDateContent}>
             <Text style={styles.deadline}>Deadline</Text>
-            <Text style={styles.date}>Mon 7, March</Text>
+            <Text style={styles.date}>{`${days[taskDate.getDay()]} ${taskDate.getDate()}, ${months[taskDate.getMonth()]}`}</Text>
           </View>
         </View>
 
         <Text style={styles.descTitle}>Description</Text>
-        <Text style={styles.description}>Escrevendo qualquqer coisa pra testar aqui. Lorem ipsum dolor </Text>
+        <Text style={styles.description}>{description}</Text>
 
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.textButton}>Done</Text>
-          </TouchableOpacity>
+        {
+          status.toLowerCase() === 'to do' ?
+          (
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button} onPress={() => editStatus('done')}>
+                <Text style={styles.textButton}>Done</Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, {backgroundColor: colors.primary}]}>
-            <Text style={styles.textButton}>In progress</Text>
-          </TouchableOpacity>
-        </View>
+              <TouchableOpacity style={[styles.button, {backgroundColor: colors.primary}]} onPress={() => editStatus('in progress')}>
+                <Text style={styles.textButton}>In progress</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
+
+        {
+          status.toLowerCase() === 'in progress' ?
+          (
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button} onPress={() => editStatus('done')}>
+                <Text style={styles.textButton}>Done</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.button, {backgroundColor: colors.primary}]} onPress={() => editStatus('to do')}>
+                <Text style={styles.textButton}>To do</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
+
+        {
+          status.toLowerCase() === 'done' ?
+          (
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.button} onPress={() => editStatus('in progress')}>
+                <Text style={styles.textButton}>In progress</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.button, {backgroundColor: colors.primary}]} onPress={() => editStatus('to do')}>
+                <Text style={styles.textButton}>To do</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
       </View>
     </Modal>
   )

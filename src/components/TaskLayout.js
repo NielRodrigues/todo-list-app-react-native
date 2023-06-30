@@ -5,8 +5,9 @@ import colors from "../config/colors";
 import { useState } from "react";
 
 import ModalTask from "./Modal";
+import ModalEdit from "./ModalEdit";
 
-export default function TaskLayout({ task, date }) {
+export default function TaskLayout({ id, task, status, description, date }) {
 
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -15,14 +16,23 @@ export default function TaskLayout({ task, date }) {
   taskDate.setUTCDate(taskDate.getUTCDate() + 1)
 
   const [viseble, setVisible] = useState(false)
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false)
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>
-      <ModalTask viseble={viseble} setVisible={setVisible} />
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => setVisible(true)}
+    >
+      <ModalTask visible={viseble} status={status} setVisible={setVisible} task={task} description={description} date={date} id={id} />
+
+      <ModalEdit visible={visibleModalEdit} setVisible={setVisibleModalEdit} task={task} description={description} date={date} id={id} />
+
       <Text style={styles.text}>Task</Text>
-      <TouchableOpacity style={styles.editButton}>
+
+      <TouchableOpacity style={styles.editButton} onPress={() => setVisibleModalEdit(true)}>
         <Octicons name="pencil" color={colors.primary} size={20} />
       </TouchableOpacity>
+
       <Text numberOfLines={2} ellipsizeMode="tail" style={styles.name}>
         {task}
       </Text>

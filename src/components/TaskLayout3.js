@@ -3,11 +3,11 @@ import {Octicons} from "@expo/vector-icons"
 import colors from "../config/colors";
 
 import { useState } from "react";
-import ModalTask from "./Modal";
 
+import ModalTask from "./Modal";
 import ModalEdit from "./ModalEdit";
 
-export default function TaskLayout2({ task, status, description, date, id }) {
+export default function TaskLayout3({ id, task, status, description, date }) {
 
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -23,14 +23,14 @@ export default function TaskLayout2({ task, status, description, date, id }) {
       style={styles.container}
       onPress={() => setVisible(true)}
     >
-      <ModalTask visible={viseble} status={status} setVisible={setVisible} task={task} description={description} date={date} id={id}/>
+      <ModalTask visible={viseble} status={status} setVisible={setVisible} task={task} description={description} date={date} id={id} />
 
       <ModalEdit visible={visibleModalEdit} setVisible={setVisibleModalEdit} task={task} description={description} date={date} id={id} />
 
       <Text style={styles.text}>Task</Text>
 
       <TouchableOpacity style={styles.editButton} onPress={() => setVisibleModalEdit(true)}>
-        <Octicons name="pencil" color={colors.text} size={20} />
+        <Octicons name="pencil" color={colors.primary} size={20} />
       </TouchableOpacity>
 
       <Text numberOfLines={2} ellipsizeMode="tail" style={styles.name}>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: '82%',
     borderRadius: 16,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     elevation: 10,
     display: "flex",
     flexDirection: 'column',
@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     fontWeight: '400',
-    color: colors.text,
+    color: colors.gray200,
   },
 
   date: {
     fontSize: 12,
     fontWeight: '400',
-    color: colors.text,
+    color: colors.gray200,
     position: 'absolute',
     bottom: 12,
     left: 12,

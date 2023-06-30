@@ -7,11 +7,26 @@ import { TodosContext } from "../context/todosContexts";
 
 export default function DatePicker() {
 
-  const { dayCheckedHome, setDayCheckedHome } = useContext(TodosContext)
+  const { dayCheckedHome, setDayCheckedHome, quantity } = useContext(TodosContext)
 
   const [week, setWeek] = useState([])
+  const currentDate = new Date();
+
+  const taskDate = new Date(dayCheckedHome)
+  taskDate.setUTCDate(taskDate.getUTCDate() + 1)
+
+  const today = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+
+  const tomorrowDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1)
+
+  const tomorrow = `${new Date(tomorrowDate).getFullYear()}-${new Date(tomorrowDate).getMonth()+1}-${new Date(tomorrowDate).getDate()}`
+
+  const yesterdayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1)
+
+  const yesterday = `${new Date(yesterdayDate).getFullYear()}-${new Date(yesterdayDate).getMonth()+1}-${new Date(yesterdayDate).getDate()}`
 
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   useEffect(() => {
     const currentDate = new Date();
@@ -25,11 +40,62 @@ export default function DatePicker() {
     setWeek(weekDates);
   }, [])
 
-  useEffect(() => {}, [dayCheckedHome])
+  useEffect(() => {}, [dayCheckedHome, quantity])
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textTop}>You've got <Text style={styles.textSpan}>6</Text> tasks today</Text>
+      {
+        today === dayCheckedHome ?
+        (
+          quantity > 0 ?
+          (
+            <Text style={styles.textTop}>You've got <Text style={styles.textSpan}>{quantity}</Text> tasks today</Text>
+          )
+          :
+          (
+            <Text style={styles.textTop}>You don't have any tasks today</Text>
+          )
+        )
+        :
+        (
+          tomorrow === dayCheckedHome ?
+          (
+            quantity > 0 ?
+            (
+              <Text style={styles.textTop}>You'll have <Text style={styles.textSpan}>{quantity}</Text> tasks tomorrow</Text>
+            )
+            :
+            (
+              <Text style={styles.textTop}>You don't have any tasks tomorrow</Text>
+            )
+          )
+          :
+          (
+            yesterday === dayCheckedHome ?
+            (
+              quantity > 0 ?
+              (
+                <Text style={styles.textTop}>You had <Text style={styles.textSpan}>{quantity}</Text> tasks yesterday</Text>
+              )
+              :
+              (
+                <Text style={styles.textTop}>You didn't have any tasks yesterday</Text>
+              )
+            )
+            :
+            (
+              quantity > 0 ?
+              (
+                <Text style={styles.textTop}>You'll have <Text style={styles.textSpan}>{quantity}</Text> tasks on {taskDate.getDate()} {months[taskDate.getMonth()]}</Text>
+              )
+              :
+              (
+                <Text style={styles.textTop}>You don't have any tasks on {taskDate.getDate()} {months[taskDate.getMonth()]}</Text>
+              )
+            )
+          )
+        )
+      }
       <ScrollView style={styles.weeklyDates} horizontal={true} showsHorizontalScrollIndicator={false}>
         {
           week.map((date) => (
@@ -62,9 +128,10 @@ const styles = StyleSheet.create({
   },
 
   textTop: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight:'700',
     color: colors.secondary,
+    marginTop: 8,
   },
 
   textSpan: {
