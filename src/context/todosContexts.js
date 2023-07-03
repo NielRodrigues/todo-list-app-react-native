@@ -6,9 +6,15 @@ export function TodosProvider({ children }) {
 
   const [todos, setTodos] = useState([])
   const [dayCheckedHome, setDayCheckedHome] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
+  const [dayCheckedTasks, setDayCheckedTasks] = useState(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`)
   const [taskOnGoing, setTaskOnGoing] = useState([])
   const [taskInProgress, setTaskInProgress] = useState([])
   const [taskDone, setTaskDone] = useState([])
+
+  const [taskOnGoingTasks, setTaskOnGoingTasks] = useState([])
+  const [taskInProgressTasks, setTaskInProgressTasks] = useState([])
+  const [taskDoneTasks, setTaskDoneTasks] = useState([])
+
   const [quantity, setQuantity] = useState(0)
 
   useEffect(() => {}, [todos, dayCheckedHome])
@@ -27,8 +33,18 @@ export function TodosProvider({ children }) {
         setTaskInProgress,
         taskDone,
         setTaskDone,
+
+        taskOnGoingTasks,
+        setTaskOnGoingTasks,
+        taskInProgressTasks,
+        setTaskInProgressTasks,
+        taskDoneTasks,
+        setTaskDoneTasks,
+
         quantity,
-        setQuantity
+        setQuantity,
+        dayCheckedTasks,
+        setDayCheckedTasks,
       }}
     >
 

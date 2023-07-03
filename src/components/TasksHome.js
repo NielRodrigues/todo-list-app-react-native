@@ -8,7 +8,7 @@ import TaskLayout3 from "./TaskLayout3";
 import { useContext, useEffect, useState } from "react";
 import { TodosContext } from "../context/todosContexts";
 
-export default function TasksHome() {
+export default function Tasks() {
 
   const {
     todos,
@@ -37,7 +37,7 @@ export default function TasksHome() {
 
 
   return (
-    <ScrollView vertical={true} style={styles.container}>
+    <ScrollView vertical={true} showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.tasksSection}>
         <View style={styles.textContent}>
           <Text style={styles.textTaskSection}>To do</Text>

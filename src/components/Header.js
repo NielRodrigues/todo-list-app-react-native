@@ -1,13 +1,24 @@
 import { View, StyleSheet, Image, Text } from "react-native";
 import user from "../../assets/user.png"
 import colors from "../config/colors";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+
+  const [saud, setSaud] = useState()
+  const hours = new Date()
+
+  useEffect(() => {
+    if(hours.getHours() > 5) setSaud("Good Morning")
+    if(hours.getHours() > 12) setSaud("Good Afternoon")
+    if(hours.getHours() > 18 || hours.getHours() <= 5) setSaud("Good Evening")
+  }, [])
+
   return (
     <View style={styles.container}>
       <Image style={styles.user_picture} source={user} />
       <View style={styles.textContent}>
-        <Text style={styles.saud}>Good Morning</Text>
+        <Text style={styles.saud}>{saud}</Text>
         <Text style={styles.name}>Name!</Text>
       </View>
     </View>
