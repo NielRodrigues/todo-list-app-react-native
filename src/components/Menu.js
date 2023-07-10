@@ -5,7 +5,7 @@ import { Ionicons, AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
 import Home from "../pages/Home"
-import Chat from "../pages/Chat"
+import Tasks from "../pages/Tasks"
 import Add from "../pages/Add"
 import Calendar from "../pages/Calendar"
 import User from "../pages/User"
@@ -45,8 +45,8 @@ export default function Menu() {
             <Ionicons name="newspaper" color={color} size={20} />
           )
         }}
-        name='Chat'
-        component={Chat} />
+        name='Tasks'
+        component={Tasks} />
 
       <Tab.Screen
         options={{

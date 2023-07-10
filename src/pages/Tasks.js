@@ -6,9 +6,9 @@ import { TodosContext } from '../context/todosContexts';
 import colors from '../config/colors';
 import Header from '../components/Header';
 import DatePicker from "../components/DatePicker"
-import Tasks from '../components/Tasks';
+import TasksContent from '../components/TasksContent';
 
-export default function Chat() {
+export default function Tasks() {
 
   const {todos} = useContext(TodosContext)
 
@@ -17,7 +17,7 @@ export default function Chat() {
       <View style={styles.top}>
         <Text style={styles.textTop}>All tasks</Text>
       </View>
-      <Tasks />
+      <TasksContent />
       <StatusBar style="auto" />
     </View>
   );

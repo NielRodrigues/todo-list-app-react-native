@@ -1,9 +1,12 @@
 import { View, StyleSheet, Image, Text } from "react-native";
 import user from "../../assets/user.png"
 import colors from "../config/colors";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { TodosContext } from "../context/todosContexts";
 
 export default function Header() {
+
+  const { name } = useContext(TodosContext)
 
   const [saud, setSaud] = useState()
   const hours = new Date()
@@ -19,7 +22,7 @@ export default function Header() {
       <Image style={styles.user_picture} source={user} />
       <View style={styles.textContent}>
         <Text style={styles.saud}>{saud}</Text>
-        <Text style={styles.name}>Name!</Text>
+        <Text style={styles.name}>{name}!</Text>
       </View>
     </View>
   )

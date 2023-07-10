@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useState, useEffect } from 'react';
+
 
 export const TodosContext = createContext();
 
@@ -15,9 +17,46 @@ export function TodosProvider({ children }) {
   const [taskInProgressTasks, setTaskInProgressTasks] = useState([])
   const [taskDoneTasks, setTaskDoneTasks] = useState([])
 
+  const [name, setName] = useState("Name")
+
   const [quantity, setQuantity] = useState(0)
 
   useEffect(() => {}, [todos, dayCheckedHome])
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!(await AsyncStorage.getItem('name'))) {
+        await AsyncStorage.setItem('name', 'Name');
+        setName('Name');
+      }
+      setName(await AsyncStorage.getItem('name'));
+
+      if (!(await AsyncStorage.getItem('todos'))) {
+        await AsyncStorage.setItem('todos', JSON.stringify([]));
+      }
+      setTodos(JSON.parse(await AsyncStorage.getItem('todos')));
+
+      console.log('\n\n\nName', await AsyncStorage.getItem('name'));
+    }
+
+    fetchData();
+  }, [])
+
+  useEffect(() => {
+    async function changeName() {
+      await AsyncStorage.setItem('name', name)
+    }
+    changeName()
+  }, [name])
+
+
+  useEffect(() => {
+    async function updateTodos() {
+      await AsyncStorage.setItem('todos', JSON.stringify(todos))
+    }
+    updateTodos
+  }, [todos])
+
 
   return (
     <TodosContext.Provider
@@ -45,6 +84,9 @@ export function TodosProvider({ children }) {
         setQuantity,
         dayCheckedTasks,
         setDayCheckedTasks,
+
+        name,
+        setName
       }}
     >
 
